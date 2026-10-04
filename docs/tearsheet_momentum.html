@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selection-adjusted tear sheet</title><style>
+:root { --ink:#0b0b0b; --ink2:#52514e; --muted:#898781; --grid:#e1e0d9; --axis:#c3c2b7;
+  --neutral:#f0efec; --surface:#fcfcfb; --blue:#2a78d6; --green:#1baf7a; --orange:#eb6834;
+  --red:#c93a39; --amber:#9a6a00; }
+* { box-sizing: border-box; }
+body { margin:0; background:#fff; color:var(--ink);
+  font:15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.page { max-width:900px; margin:0 auto; padding:56px 40px 64px; }
+h1 { font-size:26px; font-weight:600; letter-spacing:-0.01em; margin:0 0 4px; }
+h2 { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;
+  color:var(--ink2); margin:44px 0 14px; padding-bottom:8px; border-bottom:1px solid var(--grid); }
+.sub { color:var(--ink2); margin:0; }
+.meta { color:var(--muted); font-size:13px; margin-top:6px; }
+.tiles { display:flex; gap:16px; margin-top:32px; }
+.tile { flex:1; background:var(--surface); border:1px solid var(--grid); border-radius:10px;
+  padding:16px 18px; }
+.tile .k { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+.tile .v { font-size:30px; font-weight:600; letter-spacing:-0.02em; margin-top:2px; }
+.tile .s { font-size:13px; color:var(--ink2); margin-top:2px; }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th { text-align:left; font-weight:500; color:var(--muted); font-size:12px;
+  border-bottom:1px solid var(--axis); padding:6px 10px 6px 0; }
+td { padding:8px 10px 8px 0; border-bottom:1px solid var(--grid); }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; padding-right:18px; }
+tr.hl td { font-weight:600; }
+.note { color:var(--ink2); font-size:13px; }
+.warn { border-left:3px solid var(--amber); background:#fbf6ea; padding:10px 14px; margin:10px 0;
+  font-size:13.5px; color:#5c4300; }
+svg text { font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; }
+ul { padding-left:20px; margin:8px 0; } li { margin:4px 0; }
+#summary { padding:20px 20px 4px; }
+.foot { margin-top:48px; font-size:12px; color:var(--muted); }
+</style></head>
+<body><div class="page">
+<div id="summary">
+<h1>Selection-adjusted tear sheet</h1>
+<p class="sub">The best of 256 backtests, corrected for the selection that picked it.</p>
+<p class="meta">momentum_insample.csv &middot; 256 trials &middot; 738 observations &middot; 1929-07-31 to 1990-12-31 &middot; 12 periods per year &middot; covariance: HAC (Newey-West)</p>
+
+<div class="tiles">
+<div class="tile"><div class="k">Winner</div><div class="v" style="font-size:20px;line-height:1.3">mom J=12 skip=0 H=1 n=10</div>
+<div class="s">trial 164 of 256</div></div>
+<div class="tile"><div class="k">Naive Sharpe ratio</div><div class="v">0.49</div>
+<div class="s">95% interval [0.19, 0.79]</div></div>
+<div class="tile"><div class="k">Corrected (hybrid)</div><div class="v">0.33</div>
+<div class="s">95% interval [-0.09, 0.82]</div></div>
+<div class="tile"><div class="k">Haircut</div><div class="v">33%</div>
+<div class="s">of the naive Sharpe ratio</div></div>
+</div>
+<div class="warn">the winner leads its closest rival by only 0.13 standard errors; selection matters a lot here</div>
+<h2>Estimates and intervals for the winner's true Sharpe ratio</h2>
+<table><tr><th>Procedure</th><th class="n">Estimate</th><th class="n">95% interval</th>
+<th class="n">Width</th><th>Note</th></tr><tr><td>Naive</td><td class="n">0.49</td><td class="n">[0.19, 0.79]</td><td class="n">0.60</td><td class="note"></td></tr>
+<tr><td>Conditional</td><td class="n">0.33</td><td class="n">[-0.64, 0.81]</td><td class="n">1.45</td><td class="note">median-unbiased</td></tr>
+<tr class=hl><td>Hybrid</td><td class="n">0.33</td><td class="n">[-0.09, 0.82]</td><td class="n">0.90</td><td class="note">default; bounded by projection</td></tr>
+<tr><td>Projection</td><td class="n">n/a</td><td class="n">[0.02, 0.95]</td><td class="n">0.93</td><td class="note">simultaneous; no point estimate</td></tr>
+<tr><td>Bonferroni</td><td class="n">n/a</td><td class="n">[-0.09, 1.06]</td><td class="n">1.15</td><td class="note">ignores correlation</td></tr></table>
+<div style="margin-top:18px"><svg viewBox="0 0 760 238" width="100%" role="img" aria-label="Naive and corrected intervals for the winner">
+<line x1="182.0" x2="182.0" y1="14" y2="204" stroke="#e1e0d9" stroke-width="1"/>
+<text x="182.0" y="222" font-size="11" fill="#898781" text-anchor="middle">-0.5</text>
+<line x1="351.8" x2="351.8" y1="14" y2="204" stroke="#e1e0d9" stroke-width="1"/>
+<text x="351.8" y="222" font-size="11" fill="#898781" text-anchor="middle">0</text>
+<line x1="521.7" x2="521.7" y1="14" y2="204" stroke="#e1e0d9" stroke-width="1"/>
+<text x="521.7" y="222" font-size="11" fill="#898781" text-anchor="middle">0.5</text>
+<line x1="691.5" x2="691.5" y1="14" y2="204" stroke="#e1e0d9" stroke-width="1"/>
+<text x="691.5" y="222" font-size="11" fill="#898781" text-anchor="middle">1</text>
+<line x1="351.8" x2="351.8" y1="14" y2="204" stroke="#898781" stroke-width="1.2"/>
+<text x="98" y="37.0" font-size="12.5" fill="#52514e" text-anchor="end">Naive</text>
+<line x1="415.3" x2="620.4" y1="33.0" y2="33.0" stroke="#eb6834" stroke-width="5" stroke-linecap="round"/>
+<circle cx="517.9" cy="33.0" r="5.5" fill="#fff" stroke="#eb6834" stroke-width="2.5"/>
+<text x="98" y="75.0" font-size="12.5" fill="#52514e" text-anchor="end">Conditional</text>
+<line x1="133.2" x2="626.0" y1="71.0" y2="71.0" stroke="#1baf7a" stroke-width="5" stroke-linecap="round"/>
+<circle cx="463.5" cy="71.0" r="5.5" fill="#fff" stroke="#1baf7a" stroke-width="2.5"/>
+<text x="98" y="113.0" font-size="12.5" fill="#52514e" text-anchor="end">Hybrid</text>
+<line x1="322.3" x2="629.2" y1="109.0" y2="109.0" stroke="#2a78d6" stroke-width="5" stroke-linecap="round"/>
+<circle cx="463.5" cy="109.0" r="5.5" fill="#fff" stroke="#2a78d6" stroke-width="2.5"/>
+<text x="98" y="151.0" font-size="12.5" fill="#52514e" text-anchor="end">Projection</text>
+<line x1="359.9" x2="675.8" y1="147.0" y2="147.0" stroke="#898781" stroke-width="5" stroke-linecap="round"/>
+<circle cx="517.9" cy="147.0" r="5.5" fill="#fff" stroke="#898781" stroke-width="2.5"/>
+<text x="98" y="189.0" font-size="12.5" fill="#52514e" text-anchor="end">Bonferroni</text>
+<line x1="322.9" x2="712.8" y1="185.0" y2="185.0" stroke="#c3c2b7" stroke-width="5" stroke-linecap="round"/>
+<circle cx="517.9" cy="185.0" r="5.5" fill="#fff" stroke="#c3c2b7" stroke-width="2.5"/>
+<text x="423.0" y="236" font-size="11.5" fill="#52514e" text-anchor="middle">annualised Sharpe ratio</text>
+</svg></div>
+<p class="note">Circles mark point estimates (naive: the winner's observed value). The conditional
+estimate is median-unbiased given selection; the hybrid estimate is within &beta;/2 of
+median-unbiased.</p>
+</div>
+
+<h2>Comparators</h2>
+<p class="note">These tests ask whether the winner differs from zero. None of them gives a
+corrected estimate or an interval for its true Sharpe ratio.</p>
+<table>
+<tr><th>Method</th><th class="n">Result</th><th>Reading</th></tr>
+<tr><td>Deflated Sharpe ratio, N = K = 256</td><td class="n">0.858</td>
+<td class="note">probability that the true Sharpe ratio exceeds the expected maximum of
+256 unskilled trials (annualised 0.32)</td></tr>
+<tr><td>Deflated Sharpe ratio, N = 1.7 effective</td>
+<td class="n">0.998</td>
+<td class="note">same with the eigenvalue-based effective number of trials</td></tr>
+<tr><td>Harvey-Liu haircut, Bonferroni (= Holm)</td><td class="n">44%</td>
+<td class="note">adjusted p = 0.032, adjusted Sharpe ratio 0.27</td></tr>
+<tr><td>Harvey-Liu haircut, BHY</td><td class="n">50%</td>
+<td class="note">adjusted p = 0.057, adjusted Sharpe ratio 0.24</td></tr>
+<tr><td>Hansen SPA</td><td class="n">p = 0.013</td><td class="note">null: no strategy has a positive mean return</td></tr><tr><td>Romano-Wolf StepM</td><td class="n">no</td><td class="note">winner has a positive mean at size 0.05 (5 strategies identified)</td></tr></table>
+<h2>Diagnostics</h2>
+<table>
+<tr><td>Winner margin</td><td class="n">0.13 SE</td>
+<td class="note">smallest studentised gap to a rival (trial mom J=1 skip=0 H=12 n=10)</td></tr>
+<tr><td>Gap to second best</td><td class="n">0.03 SE</td>
+<td class="note">difference of the two largest estimates in standard errors of the winner</td></tr>
+<tr><td>Effective number of trials</td><td class="n">1.7</td>
+<td class="note">of 256 logged; eigenvalue participation ratio of the correlations</td></tr>
+<tr><td>Truncation interval for the winner</td><td class="n">[0.41, 0.84]</td>
+<td class="note">selection holds iff the winner's estimate lies here given the rest of the data</td></tr>
+<tr><td>Conditional / naive width</td><td class="n">2.4x</td>
+<td class="note">large when the winner barely wins; the hybrid interval caps it</td></tr>
+</table>
+<h2>Coverage under your covariance</h2>
+<p class="note">1,000 simulated panels with the estimated covariance matrix in which
+every trial has the same true Sharpe ratio (the least-separated configuration), the best trial is
+selected and each interval is computed. The dashed line is the nominal 95%. Failures of the
+inversion: 0 (counted as misses). Simulation error is about
+&plusmn;1.4%.</p>
+<svg viewBox="0 0 760 214" width="100%" role="img" aria-label="Simulated coverage of each interval">
+<line x1="110.0" x2="110.0" y1="10" y2="180" stroke="#e1e0d9"/>
+<text x="110.0" y="198" font-size="11" fill="#898781" text-anchor="middle">0%</text>
+<line x1="258.5" x2="258.5" y1="10" y2="180" stroke="#e1e0d9"/>
+<text x="258.5" y="198" font-size="11" fill="#898781" text-anchor="middle">25%</text>
+<line x1="407.0" x2="407.0" y1="10" y2="180" stroke="#e1e0d9"/>
+<text x="407.0" y="198" font-size="11" fill="#898781" text-anchor="middle">50%</text>
+<line x1="555.5" x2="555.5" y1="10" y2="180" stroke="#e1e0d9"/>
+<text x="555.5" y="198" font-size="11" fill="#898781" text-anchor="middle">75%</text>
+<line x1="704.0" x2="704.0" y1="10" y2="180" stroke="#e1e0d9"/>
+<text x="704.0" y="198" font-size="11" fill="#898781" text-anchor="middle">100%</text>
+<line x1="674.3" x2="674.3" y1="6" y2="180" stroke="#0b0b0b" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="98" y="31.0" font-size="12.5" fill="#52514e" text-anchor="end">Naive</text>
+<rect x="110.0" y="19.0" width="460.4" height="16" rx="3" fill="#eb6834"/>
+<text x="578.4" y="31.0" font-size="12" fill="#0b0b0b" font-variant-numeric="tabular-nums">77.5%</text>
+<text x="98" y="65.0" font-size="12.5" fill="#52514e" text-anchor="end">Conditional</text>
+<rect x="110.0" y="53.0" width="560.7" height="16" rx="3" fill="#1baf7a"/>
+<text x="678.7" y="65.0" font-size="12" fill="#0b0b0b" font-variant-numeric="tabular-nums">94.4%</text>
+<text x="98" y="99.0" font-size="12.5" fill="#52514e" text-anchor="end">Hybrid</text>
+<rect x="110.0" y="87.0" width="563.1" height="16" rx="3" fill="#2a78d6"/>
+<text x="681.1" y="99.0" font-size="12" fill="#0b0b0b" font-variant-numeric="tabular-nums">94.8%</text>
+<text x="98" y="133.0" font-size="12.5" fill="#52514e" text-anchor="end">Projection</text>
+<rect x="110.0" y="121.0" width="580.9" height="16" rx="3" fill="#898781"/>
+<text x="698.9" y="133.0" font-size="12" fill="#0b0b0b" font-variant-numeric="tabular-nums">97.8%</text>
+<text x="98" y="167.0" font-size="12.5" fill="#52514e" text-anchor="end">Bonferroni</text>
+<rect x="110.0" y="155.0" width="590.4" height="16" rx="3" fill="#c3c2b7"/>
+<text x="708.4" y="167.0" font-size="12" fill="#0b0b0b" font-variant-numeric="tabular-nums">99.4%</text>
+</svg>
+<h2>Unlogged trials</h2>
+<p class="note">Exact for the projection interval, which is valid for any selection among the
+enlarged set; the conditional and hybrid intervals depend on unobserved values and are shown
+only as a scenario.</p>
+<table><tr><th>Assumption</th><th class="n">Critical value</th><th class="n">Projection interval</th>
+<th class="n">Width vs logged</th></tr><tr><td>0 hidden trials</td><td class='n'>3.02</td><td class='n'>[0.02, 0.95]</td><td class='n'>1.00x</td></tr><tr><td>50 hidden trials</td><td class='n'>3.06</td><td class='n'>[0.02, 0.96]</td><td class='n'>1.01x</td></tr><tr><td>100 hidden trials</td><td class='n'>3.06</td><td class='n'>[0.02, 0.96]</td><td class='n'>1.02x</td></tr></table><p class='note'>Scenario simulation (not a confidence interval): if every trial, logged or hidden, had true Sharpe ratio 0 and each hidden trial had correlation 0.98 with the logged trial it resembles, the winner would still be the best in 87% of draws. Over those draws the hybrid estimate ranges from -0.05 to 0.33 (median 0.33) and the hybrid interval's lower end from -0.10 to -0.09.</p>
+<h2>Out-of-sample check</h2>
+<p class="note">Realised Sharpe ratio of the winner on 428 later observations:
+<b>0.43</b> (standard error 0.18). The intervals below forecast this new
+estimate if the winner's true Sharpe ratio were unchanged; they include its own sampling error, which
+an interval for the in-sample true value does not. Conditional p-value: 0.863.
+A realised value outside the interval points to decay beyond what selection explains.</p>
+<table><tr><th>Forecast interval</th><th class="n">95% interval</th>
+<th class="n">Realised value</th></tr><tr><td>Naive</td><td class='n'>[0.03, 0.95]</td><td class='n'>inside</td></tr><tr><td>Conditional</td><td class='n'>[-0.67, 0.94]</td><td class='n'>inside</td></tr><tr><td>Hybrid</td><td class='n'>[-0.37, 0.95]</td><td class='n'>inside</td></tr></table>
+<p class="foot">Method: conditional and hybrid inference on winners (Andrews, Kitagawa and McCloskey,
+Quarterly Journal of Economics 139(1), 2024). Under normality with a known covariance the
+conditional interval has exact conditional coverage and the hybrid interval has unconditional
+coverage of at least the nominal level; with an estimated covariance and non-normal returns both
+hold asymptotically. Selection is argmax on the same data; discretionary choices, hidden trials
+and non-stationarity are not covered.
+Seed 0, 100,000 critical-value draws, generated 2026-10-04.
+Illustrative research, not investment advice.</p>
+</div></body></html>
