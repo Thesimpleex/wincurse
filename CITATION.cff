@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "wincurse: Selection-corrected Sharpe ratios for the best of many backtests"
+authors:
+  - family-names: Majores
+    given-names: Alexander
+repository-code: "https://github.com/Thesimpleex/wincurse"
+license: MIT
+version: 0.1.0
+date-released: "2026-10-04"
